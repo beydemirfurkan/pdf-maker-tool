@@ -1,0 +1,18 @@
+bir pdf toolu yapıyorum. 
+senden burada bazı isteklerim olacak. 
+
+1- tamamen responsive olmalı. 
+
+2- sayfa boyutunu değiştirme kısmı şuan çalışmıyor. 
+
+3- kullanıcı tablo ekleyebiliyor fakat tablonun ıceriğini istediği gibi düzenleyemiyor. tabloyu şekillendiremiyor. 
+
+4- pdf i dışarıya aktarınca buradaki gibi gözükmüyor. resimler ya küçük ya büyük gözüküyor. 100% olacak sekilde veya verilen boyut kadar olmuyor. 
+
+5- kullanıcı ekledıgı elementın size ını sağdan soldan çekerek otomatik olarak kendisi ayarlayabilsin istiyorum. manuel değerler girmek yerine. 
+
+6- kullanıcı kaydet dediği zaman local storage de falan tutalım ki tekrar girdiği zaman görebilsin. temizle diyince sileriz oradan. 
+
+7- burayı daha da gelişmiş hale getir ve daha dinamik hale getir lütfen. 
+
+bu değişiklikleri uygulayarak kodun son halini vermeni istiyorum tamamen. 
