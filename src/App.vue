@@ -323,29 +323,39 @@
         </template>
 
         <!-- Tablo Ayarları -->
-        <template v-if="selectedElement.type === 'table'">
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Tablo Boyutu</label>
-            <div class="grid grid-cols-2 gap-2">
-              <input v-model="selectedElement.rows" type="number" placeholder="Satır"
-                class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" min="1"
-                @change="updateTableSize">
-              <input v-model="selectedElement.columns" type="number" placeholder="Sütun"
-                class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" min="1"
-                @change="updateTableSize">
+        <template v-if="selectedElement?.type === 'table'">
+          <div class="space-y-4">
+            <div class="overflow-x-auto">
+              <table class="w-full border-collapse">
+                <tbody>
+                  <tr v-for="(row, rowIndex) in selectedElement.content" :key="rowIndex">
+                    <td v-for="(cell, colIndex) in row" :key="colIndex" class="border p-2 min-w-[100px]">
+                      <input type="text" v-model="selectedElement.content[rowIndex][colIndex]"
+                        class="w-full px-2 py-1 border-0 focus:ring-2 focus:ring-blue-500"
+                        @input="updateTableContent(rowIndex, colIndex, $event.target.value)">
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          </div>
 
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Kenarlık Rengi</label>
-            <input type="color" v-model="selectedElement.style.borderColor" class="w-full h-10 rounded-lg">
-          </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="text-sm text-gray-600 block mb-2">Hücre Dolgusu</label>
+                <input type="number" v-model="selectedElement.style.cellPadding"
+                  class="w-full px-3 py-2 border rounded-lg" min="0" max="20">
+              </div>
+              <div>
+                <label class="text-sm text-gray-600 block mb-2">Kenarlık Kalınlığı</label>
+                <input type="number" v-model="selectedElement.style.borderWidth"
+                  class="w-full px-3 py-2 border rounded-lg" min="0" max="5">
+              </div>
+            </div>
 
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Kenarlık Kalınlığı</label>
-            <input type="number" v-model="selectedElement.style.borderWidth"
-              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" min="1"
-              max="10">
+            <div>
+              <label class="text-sm text-gray-600 block mb-2">Kenarlık Rengi</label>
+              <input type="color" v-model="selectedElement.style.borderColor" class="w-full h-10 rounded-lg">
+            </div>
           </div>
         </template>
 
@@ -387,7 +397,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, watchEffect } from 'vue'
 import draggable from 'vuedraggable'
 import pdfMake from 'pdfmake/build/pdfmake'
 
@@ -422,11 +432,62 @@ const historyIndex = ref(-1)
 const canUndo = ref(false)
 const canRedo = ref(false)
 
+const PAGE_SIZES = {
+  a4: { width: 595, height: 842 },
+  a3: { width: 842, height: 1191 },
+  letter: { width: 612, height: 792 },
+  legal: { width: 612, height: 1008 }
+}
+
 const templates = ref([
   { id: 1, name: 'Boş Belge' },
   { id: 2, name: 'Rapor Şablonu' },
   { id: 3, name: 'Mektup Şablonu' }
 ])
+
+watchEffect(() => {
+  const size = PAGE_SIZES[pageSettings.size]
+  if (size) {
+    const container = document.querySelector('.page-container')
+    if (container) {
+      if (pageSettings.orientation === 'portrait') {
+        container.style.width = `${size.width}px`
+        container.style.minHeight = `${size.height}px`
+      } else {
+        container.style.width = `${size.height}px`
+        container.style.minHeight = `${size.width}px`
+      }
+    }
+  }
+})
+
+const initTableElement = () => {
+  return {
+    id: `element-${Date.now()}`,
+    type: 'table',
+    rows: 3,
+    columns: 3,
+    content: Array(3).fill().map(() => Array(3).fill('')),
+    style: {
+      fontFamily: 'Roboto',
+      fontSize: 14,
+      color: '#000000',
+      textAlign: 'left',
+      borderColor: '#000000',
+      borderWidth: 1,
+      cellPadding: 8
+    }
+  }
+}
+
+const updateTableContent = (rowIndex, colIndex, value) => {
+  if (!selectedElement.value || selectedElement.value.type !== 'table') return
+
+  const newContent = [...selectedElement.value.content]
+  newContent[rowIndex][colIndex] = value
+  selectedElement.value.content = newContent
+  addToHistory()
+}
 
 const addElement = (type) => {
   const newElement = {
@@ -617,12 +678,18 @@ const generatePDF = () => {
 
       case 'image':
         if (element.content) {
-          const maxWidth = pageSettings.orientation === 'portrait' ? 515 : 762
-          const imageWidth = parseInt(element.style.width) || maxWidth
+          const maxWidth = pageSettings.orientation === 'portrait'
+            ? PAGE_SIZES[pageSettings.size].width - pageSettings.margins.left - pageSettings.margins.right
+            : PAGE_SIZES[pageSettings.size].height - pageSettings.margins.left - pageSettings.margins.right
+
+          let width = parseInt(element.style.width)
+          if (element.style.width.includes('%')) {
+            width = (maxWidth * parseInt(element.style.width)) / 100
+          }
+
           docDefinition.content.push({
             image: element.content,
-            width: imageWidth,
-            fit: [imageWidth, undefined],
+            width: width,
             alignment: element.style.textAlign || 'center',
             margin: [0, 10, 0, 10]
           })
@@ -633,6 +700,8 @@ const generatePDF = () => {
         if (element.content && element.content.length > 0) {
           docDefinition.content.push({
             table: {
+              headerRows: 0,
+              widths: Array(element.content[0].length).fill('*'),
               body: element.content.map(row =>
                 row.map(cell => ({
                   text: cell || '',
@@ -644,10 +713,14 @@ const generatePDF = () => {
             },
             layout: {
               defaultBorder: true,
-              hLineWidth: () => 1,
-              vLineWidth: () => 1,
+              hLineWidth: () => parseInt(element.style.borderWidth) || 1,
+              vLineWidth: () => parseInt(element.style.borderWidth) || 1,
               hLineColor: () => element.style.borderColor || '#000000',
-              vLineColor: () => element.style.borderColor || '#000000'
+              vLineColor: () => element.style.borderColor || '#000000',
+              paddingLeft: () => parseInt(element.style.cellPadding) || 8,
+              paddingRight: () => parseInt(element.style.cellPadding) || 8,
+              paddingTop: () => parseInt(element.style.cellPadding) || 8,
+              paddingBottom: () => parseInt(element.style.cellPadding) || 8
             }
           })
         }
@@ -667,8 +740,6 @@ const generatePDF = () => {
         break
 
       case 'shape':
-        // Shapes için özel işlem gerekebilir
-        // PDFMake ile şekil çizimi sınırlıdır
         docDefinition.content.push({
           canvas: [{
             type: element.shapeType === 'circle' ? 'ellipse' : 'rect',
