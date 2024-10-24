@@ -12,3 +12,17 @@ senden burada bazı isteklerim olacak.
 7- burayı daha da gelişmiş hale getir ve daha dinamik hale getir lütfen. 
 
 bu değişiklikleri uygulayarak kodun son halini vermeni istiyorum tamamen. 
+
+
+
+// Yapılacaklar : 
+
+// 1- Şuan düzenle dediğimiz zaman bir şey olmuyor. 
+// 2- PDF e video ekleniyor mu ki? buraya yazmışız ama ekleniyor mu emin değilim.
+// 3- Sayfayı böyle yazdıkça uzayıp gidiyor. Ama PDF de biliyorsun her şey sayfa sayfa. Yani bir sayfa bittiğinde ya diğer sayfaya geçsin. ya da sol alttan manuel olarak yeni bir sayfa ekleyebilsin. 
+// 4- Şuan sadece bir sayfa var. Ama sayfa sayısını arttırabilmeli.
+// 5- Elementlerde ki şekil kısmını tamamen kaldıralım lütfen. Bunu istemiyorum.
+// 6- Şuan yeni bir görsel falan ekleyemiyorum. Metin düzenleyemiyorum.
+// 7- Bildirim Özelleştirmeleri: useToast fonksiyonu ile bildirimlerin süresini ve konumunu daha da özelleştirebilirsiniz. Örneğin, kritik hatalar için kalıcı bildirimler veya belirli sürelerde otomatik kapanan bildirimler ekleyebilirsiniz.
+// 8- Görsel Geri Bildirim: Elementler üzerinde sağ tıklama yapıldığında görsel olarak hangi işlemlerin yapılabileceğini belirtmek için ikonlar veya diğer görsel öğeler ekleyebilirsiniz.
+// 9- PDF e eklenebilecek daha fazla element türü ekleyebilmek istiyorum. burayı daha da modüler hale getirmek istiyorum. Her element farklı bı component haline de getirilebilir.
