@@ -4,107 +4,110 @@
     <div :class="[
       'fixed inset-0 z-40 md:static md:z-auto md:translate-x-0 transition-transform duration-300',
       isMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
-      'w-64 border-r bg-white shadow-lg p-4 flex flex-col'
+      'w-64 border-r bg-white p-4 flex flex-col'
     ]">
       <h2 class="text-xl font-bold mb-6">PDF Düzenleyici</h2>
 
       <div class="grid grid-cols-2 gap-3 mb-6">
-        <button @click="addElement('text')"
-          class="flex flex-col items-center justify-center p-4 border rounded-lg hover:bg-gray-50 transition-colors">
-          <span class="material-icons-outlined mb-2">text_fields</span>
-          <span class="text-sm">Metin</span>
-        </button>
+        <Button variant="outline" @click="addElement('text')">
+          <span class="material-icons-outlined mr-2">text_fields</span> Metin
+        </Button>
 
-        <button @click="addElement('heading')"
-          class="flex flex-col items-center justify-center p-4 border rounded-lg hover:bg-gray-50 transition-colors">
-          <span class="material-icons-outlined mb-2">title</span>
-          <span class="text-sm">Başlık</span>
-        </button>
+        <Button variant="outline" @click="addElement('heading')">
+          <span class="material-icons-outlined mr-2">title</span> Başlık
+        </Button>
 
-        <button @click="addElement('image')"
-          class="flex flex-col items-center justify-center p-4 border rounded-lg hover:bg-gray-50 transition-colors">
-          <span class="material-icons-outlined mb-2">image</span>
-          <span class="text-sm">Görsel</span>
-        </button>
+        <Button variant="outline" @click="addElement('image')">
+          <span class="material-icons-outlined mr-2">image</span> Görsel
+        </Button>
 
-        <button @click="addElement('video')"
-          class="flex flex-col items-center justify-center p-4 border rounded-lg hover:bg-gray-50 transition-colors">
-          <span class="material-icons-outlined mb-2">video_library</span>
-          <span class="text-sm">Video</span>
-        </button>
+        <Button variant="outline" @click="addElement('video')">
+          <span class="material-icons-outlined mr-2">video_library</span> Video
+        </Button>
 
-        <button @click="addElement('link')"
-          class="flex flex-col items-center justify-center p-4 border rounded-lg hover:bg-gray-50 transition-colors">
-          <span class="material-icons-outlined mb-2">link</span>
-          <span class="text-sm">Bağlantı</span>
-        </button>
+        <Button variant="outline" @click="addElement('link')">
+          <span class="material-icons-outlined mr-2">link</span> Bağlantı
+        </Button>
 
-        <button @click="addElement('table')"
-          class="flex flex-col items-center justify-center p-4 border rounded-lg hover:bg-gray-50 transition-colors">
-          <span class="material-icons-outlined mb-2">table_chart</span>
-          <span class="text-sm">Tablo</span>
-        </button>
+        <Button variant="outline" @click="addElement('table')">
+          <span class="material-icons-outlined mr-2">table_chart</span> Tablo
+        </Button>
 
-        <button @click="addElement('list')"
-          class="flex flex-col items-center justify-center p-4 border rounded-lg hover:bg-gray-50 transition-colors">
-          <span class="material-icons-outlined mb-2">format_list_bulleted</span>
-          <span class="text-sm">Liste</span>
-        </button>
+        <Button variant="outline" @click="addElement('list')">
+          <span class="material-icons-outlined mr-2">format_list_bulleted</span> Liste
+        </Button>
 
-        <button @click="addElement('shape')"
-          class="flex flex-col items-center justify-center p-4 border rounded-lg hover:bg-gray-50 transition-colors">
-          <span class="material-icons-outlined mb-2">category</span>
-          <span class="text-sm">Şekil</span>
-        </button>
+        <Button variant="outline" @click="addElement('shape')">
+          <span class="material-icons-outlined mr-2">category</span> Şekil
+        </Button>
       </div>
 
       <div class="border-t pt-6">
         <h3 class="text-sm font-semibold mb-4">Sayfa Ayarları</h3>
 
         <div class="space-y-4">
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Sayfa Boyutu</label>
-            <select v-model="pageSettings.size"
-              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-              <option value="a4">A4</option>
-              <option value="a3">A3</option>
-              <option value="letter">Letter</option>
-              <option value="legal">Legal</option>
-            </select>
+          <!-- Sayfa Boyutu -->
+          <div>
+            <Label for="page-size" class="block text-sm font-medium text-gray-700">Sayfa Boyutu</Label>
+            <Select v-model="pageSettings.size" id="page-size">
+              <SelectTrigger>
+                <SelectValue placeholder="Sayfa Boyutu Seçin" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Sınıflar</SelectLabel>
+                  <SelectItem value="a4">A4</SelectItem>
+                  <SelectItem value="a3">A3</SelectItem>
+                  <SelectItem value="letter">Letter</SelectItem>
+                  <SelectItem value="legal">Legal</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
 
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Sayfa Yönü</label>
-            <select v-model="pageSettings.orientation"
-              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-              <option value="portrait">Dikey</option>
-              <option value="landscape">Yatay</option>
-            </select>
+          <!-- Sayfa Yönü -->
+          <div>
+            <Label for="page-orientation" class="block text-sm font-medium text-gray-700">Sayfa Yönü</Label>
+            <Select v-model="pageSettings.orientation" id="page-orientation">
+              <SelectTrigger>
+                <SelectValue placeholder="Sayfa Yönü Seçin" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Yön</SelectLabel>
+                  <SelectItem value="portrait">Dikey</SelectItem>
+                  <SelectItem value="landscape">Yatay</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
 
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Kenar Boşlukları</label>
+          <!-- Kenar Boşlukları -->
+          <div>
+            <Label class="block text-sm font-medium text-gray-700">Kenar Boşlukları (mm)</Label>
             <div class="grid grid-cols-2 gap-2">
-              <input v-model.number="pageSettings.margins.top" type="number" placeholder="Üst"
-                class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" min="0">
-              <input v-model.number="pageSettings.margins.right" type="number" placeholder="Sağ"
-                class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" min="0">
-              <input v-model.number="pageSettings.margins.bottom" type="number" placeholder="Alt"
-                class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" min="0">
-              <input v-model.number="pageSettings.margins.left" type="number" placeholder="Sol"
-                class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" min="0">
+              <div>
+                <Label for="margin-top" class="sr-only">Üst</Label>
+                <Input id="margin-top" type="number" v-model.number="pageSettings.margins.top" placeholder="Üst"
+                  min="0" />
+              </div>
+              <div>
+                <Label for="margin-right" class="sr-only">Sağ</Label>
+                <Input id="margin-right" type="number" v-model.number="pageSettings.margins.right" placeholder="Sağ"
+                  min="0" />
+              </div>
+              <div>
+                <Label for="margin-bottom" class="sr-only">Alt</Label>
+                <Input id="margin-bottom" type="number" v-model.number="pageSettings.margins.bottom" placeholder="Alt"
+                  min="0" />
+              </div>
+              <div>
+                <Label for="margin-left" class="sr-only">Sol</Label>
+                <Input id="margin-left" type="number" v-model.number="pageSettings.margins.left" placeholder="Sol"
+                  min="0" />
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div class="border-t pt-6 mt-6">
-        <h3 class="text-sm font-semibold mb-4">Hazır Şablonlar</h3>
-        <div class="space-y-2">
-          <button v-for="template in templates" :key="template.id" @click="loadTemplate(template)"
-            class="w-full px-4 py-2 text-left border rounded-lg hover:bg-gray-50 transition-colors">
-            {{ template.name }}
-          </button>
         </div>
       </div>
     </div>
@@ -120,410 +123,280 @@
       <!-- Üst Araç Çubuğu -->
       <div class="h-16 border-b bg-white px-6 flex items-center justify-between">
         <div class="flex items-center space-x-4">
-          <button @click="generatePDF" :disabled="!canDownload"
-            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+          <Button @click="generatePDF" :disabled="!canDownload" variant="primary"
+            class="flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
             <span class="material-icons-outlined">picture_as_pdf</span>
             PDF Oluştur
-          </button>
+          </Button>
 
-          <button @click="clearElements"
-            class="px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
+          <Button @click="clearElements" variant="outline" class="flex items-center gap-2">
             <span class="material-icons-outlined">delete_sweep</span>
             Temizle
-          </button>
+          </Button>
         </div>
 
         <div class="flex items-center space-x-4">
-          <button @click="undoAction"
+          <Button variant="ghost" @click="undoAction" :disabled="!canUndo"
             class="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-            :disabled="!canUndo" title="Geri Al">
+            aria-label="Geri Al">
             <span class="material-icons-outlined">undo</span>
-          </button>
-          <button @click="redoAction"
+          </Button>
+          <Button variant="ghost" @click="redoAction" :disabled="!canRedo"
             class="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-            :disabled="!canRedo" title="İleri Al">
+            aria-label="İleri Al">
             <span class="material-icons-outlined">redo</span>
-          </button>
-          <button @click="togglePreview" class="p-2 rounded-lg hover:bg-gray-100"
-            :class="{ 'bg-blue-50': isPreviewMode }" title="Önizleme">
+          </Button>
+          <Button variant="ghost" @click="togglePreview" :class="{ 'bg-blue-50': isPreviewMode }"
+            class="p-2 rounded-lg hover:bg-gray-100" aria-label="Önizleme">
             <span class="material-icons-outlined">preview</span>
-          </button>
-          <!-- Ayar Paneli Toggle Butonu (Mobil) -->
-          <button @click="toggleSettings" class="md:hidden p-2 rounded-lg hover:bg-gray-100"
-            :class="{ 'bg-blue-50': isSettingsOpen }" title="Ayarlar">
-            <span class="material-icons-outlined">settings</span>
-          </button>
+          </Button>
         </div>
       </div>
 
-      <!-- Hata Bildirimi -->
-      <Toast />
-
       <!-- Düzenleyici Alanı -->
       <div class="flex-1 p-4 md:p-8 overflow-auto bg-gray-100">
-        <div class="page-container mx-auto bg-white shadow-xl transition-all duration-300" :class="{
+        <div class="page-container mx-auto bg-white transition-all duration-300" :class="{
           'w-full max-w-[595px]': pageSettings.orientation === 'portrait',
           'w-full max-w-[842px]': pageSettings.orientation === 'landscape'
-        }" :style="{
-          minHeight: pageSettings.orientation === 'portrait' ? '842px' : '595px',
-          padding: `${pageSettings.margins.top}px ${pageSettings.margins.right}px ${pageSettings.margins.bottom}px ${pageSettings.margins.left}px`
-        }">
+        }" :style="pageContainerStyle">
           <draggable v-model="elements" :group="{ name: 'elements' }" item-key="id" class="min-h-full space-y-4"
             :disabled="isPreviewMode">
             <template #item="{ element }">
-              <div class="relative group" :class="{ 'cursor-move': !isPreviewMode }"
-                @click.stop="selectElement(element)">
-                <div class="relative rounded p-2 transition-all duration-200" :class="[
-                  !isPreviewMode && 'border-2 border-transparent hover:border-blue-200',
-                  !isPreviewMode && selectedElement?.id === element.id && 'border-blue-500 shadow-lg'
-                ]">
-                  <!-- Metin -->
-                  <div v-if="element.type === 'text'" class="min-h-[30px]">
-                    <p :style="element.style">
-                      {{ element.content || 'Metin girin...' }}
-                    </p>
-                  </div>
+              <ContextMenu>
+                <ContextMenuTrigger class="relative group">
+                  <div
+                    class="rounded p-2 transition-all duration-200 border-2 border-transparent hover:border-blue-200 cursor-pointer"
+                    :class="{ 'border-blue-500': selectedElement?.id === element.id }">
+                    <!-- Metin -->
+                    <div v-if="element.type === 'text'" class="min-h-[30px]">
+                      <p :style="element.style">
+                        {{ element.content || 'Metin girin...' }}
+                      </p>
+                    </div>
 
-                  <!-- Başlık -->
-                  <div v-if="element.type === 'heading'" class="min-h-[40px]">
-                    <h2 :style="element.style">
-                      {{ element.content || 'Başlık girin...' }}
-                    </h2>
-                  </div>
+                    <!-- Başlık -->
+                    <div v-if="element.type === 'heading'" class="min-h-[40px]">
+                      <h2 :style="element.style">
+                        {{ element.content || 'Başlık girin...' }}
+                      </h2>
+                    </div>
 
-                  <!-- Görsel -->
-                  <div v-if="element.type === 'image'" class="min-h-[100px]">
-                    <img v-if="element.content" :src="element.content" :style="element.style" class="max-w-full"
-                      alt="Yüklenen görsel" />
-                    <div v-else
-                      class="w-full h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400">
-                      Görsel Yükleyin
+                    <!-- Görsel -->
+                    <div v-if="element.type === 'image'" class="min-h-[100px]">
+                      <img v-if="element.content" :src="element.content" :style="element.style" class="max-w-full"
+                        alt="Yüklenen görsel" />
+                      <div v-else
+                        class="w-full h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400">
+                        Görsel Yükleyin
+                      </div>
+                    </div>
+
+                    <!-- Video -->
+                    <div v-if="element.type === 'video'" class="min-h-[200px]">
+                      <video v-if="element.content" :src="element.content" :style="element.style" controls
+                        class="max-w-full">
+                        Tarayıcınız videoyu desteklemiyor.
+                      </video>
+                      <div v-else
+                        class="w-full h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400">
+                        Video Yükleyin
+                      </div>
+                    </div>
+
+                    <!-- Bağlantı -->
+                    <div v-if="element.type === 'link'" class="min-h-[30px]">
+                      <a :href="element.href || '#'" :style="element.style" target="_blank" rel="noopener noreferrer">
+                        {{ element.text || 'Bağlantı Metni' }}
+                      </a>
+                    </div>
+
+                    <!-- Tablo -->
+                    <div v-if="element.type === 'table'" class="min-h-[100px] overflow-auto">
+                      <table class="w-full border-collapse">
+                        <tbody>
+                          <tr v-for="(row, rowIndex) in element.content" :key="rowIndex">
+                            <td v-for="(cell, colIndex) in row" :key="colIndex" class="border p-2"
+                              :style="element.style">
+                              <Input type="text" v-model="element.content[rowIndex][colIndex]"
+                                class="w-full px-2 py-1 border-0 focus:ring-2 focus:ring-blue-500"
+                                @input="addToHistory" />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <!-- Liste -->
+                    <div v-if="element.type === 'list'" class="min-h-[50px]">
+                      <ul :class="listClass" :style="element.style">
+                        <li v-for="(item, index) in element.content" :key="index" class="flex items-center space-x-2">
+                          <Input type="text" v-model="element.content[index]"
+                            class="flex-1 px-2 py-1 border-0 focus:ring-2 focus:ring-blue-500"
+                            @keydown.enter.prevent="addListItem(index)"
+                            @keydown.backspace="handleBackspace(index, $event)" placeholder="Liste öğesi" />
+                        </li>
+                      </ul>
+                    </div>
+
+                    <!-- Şekil -->
+                    <div v-if="element.type === 'shape'" class="min-h-[100px]">
+                      <div :style="{
+                        width: element.style.width || '100px',
+                        height: element.style.height || '100px',
+                        backgroundColor: element.style.backgroundColor,
+                        borderColor: element.style.borderColor,
+                        borderWidth: '2px',
+                        borderStyle: 'solid',
+                        borderRadius: element.shapeType === 'circle' ? '50%' : '0'
+                      }"></div>
                     </div>
                   </div>
-
-                  <!-- Video -->
-                  <div v-if="element.type === 'video'" class="min-h-[200px]">
-                    <video v-if="element.content" :src="element.content" :style="element.style" controls
-                      class="max-w-full">
-                      Tarayıcınız videoyu desteklemiyor.
-                    </video>
-                    <div v-else
-                      class="w-full h-32 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400">
-                      Video Yükleyin
-                    </div>
-                  </div>
-
-                  <!-- Bağlantı -->
-                  <div v-if="element.type === 'link'" class="min-h-[30px]">
-                    <a :href="element.href || '#'" :style="element.style" target="_blank" rel="noopener noreferrer">
-                      {{ element.text || 'Bağlantı Metni' }}
-                    </a>
-                  </div>
-
-                  <!-- Tablo -->
-                  <div v-if="element.type === 'table'" class="min-h-[100px] overflow-auto">
-                    <table class="w-full border-collapse">
-                      <tbody>
-                        <tr v-for="(row, rowIndex) in element.content" :key="rowIndex">
-                          <td v-for="(cell, colIndex) in row" :key="colIndex" class="border p-2" :style="element.style">
-                            <input type="text" v-model="element.content[rowIndex][colIndex]"
-                              class="w-full px-2 py-1 border-0 focus:ring-2 focus:ring-blue-500"
-                              @input="addToHistory" />
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <!-- Liste -->
-                  <div v-if="element.type === 'list'" class="min-h-[50px]">
-                    <ul :class="listClass" :style="element.style">
-                      <li v-for="(item, index) in element.content" :key="index" class="flex items-center space-x-2">
-                        <input type="text" v-model="element.content[index]"
-                          class="flex-1 px-2 py-1 border-0 focus:ring-2 focus:ring-blue-500"
-                          @keydown.enter.prevent="addListItem(index)" @keydown.backspace.prevent="removeListItem(index)"
-                          placeholder="Liste öğesi" />
-                      </li>
-                    </ul>
-                  </div>
-
-                  <!-- Şekil -->
-                  <div v-if="element.type === 'shape'" class="min-h-[100px]">
-                    <div :style="{
-                      width: element.style.width || '100px',
-                      height: element.style.height || '100px',
-                      backgroundColor: element.style.backgroundColor,
-                      borderColor: element.style.borderColor,
-                      borderWidth: '2px',
-                      borderStyle: 'solid',
-                      borderRadius: element.shapeType === 'circle' ? '50%' : '0'
-                    }"></div>
-                  </div>
-
-                  <!-- Element Ayarları -->
-                  <div v-if="!isPreviewMode && element === selectedElement"
-                    class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 flex space-x-2 bg-white shadow-sm rounded-lg">
-                    <button @click.stop="duplicateElement(element)" class="p-1 hover:bg-gray-100 rounded"
-                      title="Kopyala">
-                      <span class="material-icons-outlined text-sm">content_copy</span>
-                    </button>
-                    <button @click.stop="removeElement(element)" class="p-1 hover:bg-red-100 text-red-600 rounded"
-                      title="Sil">
-                      <span class="material-icons-outlined text-sm">delete</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
+                </ContextMenuTrigger>
+                <ContextMenuContent class="w-64">
+                  <ContextMenuItem @click="duplicateElement(element)">
+                    <span class="material-icons-outlined mr-2">content_copy</span> Kopyala
+                  </ContextMenuItem>
+                  <ContextMenuItem @click="removeElement(element)">
+                    <span class="material-icons-outlined mr-2">delete</span> Sil
+                  </ContextMenuItem>
+                  <ContextMenuItem @click="openEditPopover(element)">
+                    <span class="material-icons-outlined mr-2">edit</span> Düzenle
+                  </ContextMenuItem>
+                </ContextMenuContent>
+              </ContextMenu>
             </template>
           </draggable>
         </div>
       </div>
     </div>
 
-    <!-- Sağ Ayar Paneli -->
-    <div :class="[
-      'fixed inset-0 z-40 md:static md:z-auto md:translate-x-0 transition-transform duration-300',
-      isSettingsOpen ? 'translate-x-0 md:translate-x-0' : 'translate-x-full md:translate-x-0',
-      'w-full md:w-64 border-t md:border-l bg-white shadow-lg p-4 md:p-4 flex flex-col md:flex-col'
-    ]">
-      <div class="flex justify-between items-center mb-6">
-        <h3 class="text-lg font-semibold">Element Ayarları</h3>
-        <button @click="toggleSettings" class="text-gray-400 hover:text-gray-600">
-          <span class="material-icons-outlined">close</span>
-        </button>
-      </div>
-
-      <div class="space-y-4 overflow-auto">
-        <!-- Metin ve Başlık Ayarları -->
-        <template v-if="selectedElement && ['text', 'heading'].includes(selectedElement.type)">
+    <!-- Popover for Editing Elements -->
+    <Popover v-if="selectedElement">
+      <PopoverTrigger as-child>
+        <!-- Invisible trigger -->
+        <div></div>
+      </PopoverTrigger>
+      <PopoverContent class="w-80">
+        <div class="grid gap-4">
+          <!-- Genel Ayarlar -->
           <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">İçerik</label>
-            <textarea v-model="selectedElement.content" rows="3"
-              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="İçerik girin..."></textarea>
-          </div>
-
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Yazı Tipi</label>
-            <select v-model="selectedElement.style.fontFamily"
-              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-              <option value="Arial">Arial</option>
-              <option value="Times New Roman">Times New Roman</option>
-              <option value="Helvetica">Helvetica</option>
-              <option value="Courier">Courier</option>
-            </select>
-          </div>
-
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Yazı Boyutu</label>
-            <input type="number" v-model.number="selectedElement.style.fontSize"
-              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" min="8"
-              max="72">
-          </div>
-
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Yazı Rengi</label>
-            <input type="color" v-model="selectedElement.style.color" class="w-full h-10 rounded-lg">
-          </div>
-
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Hizalama</label>
-            <div class="flex space-x-2">
-              <button v-for="align in ['left', 'center', 'right', 'justify']" :key="align"
-                @click="selectedElement.style.textAlign = align" class="flex-1 p-2 border rounded-lg hover:bg-gray-50"
-                :class="{ 'bg-blue-50 border-blue-500': selectedElement.style.textAlign === align }">
-                <span class="material-icons-outlined text-sm">format_align_{{ align }}</span>
-              </button>
+            <h4 class="font-medium leading-none">Genel Ayarlar</h4>
+            <div class="grid grid-cols-3 items-center gap-4">
+              <Label for="font-size" class="sr-only">Yazı Boyutu</Label>
+              <span class="material-icons">font_download</span>
+              <Input id="font-size" type="number" v-model.number="selectedElement.style.fontSize"
+                placeholder="Yazı Boyutu" min="8" max="72" />
+              <span class="material-icons">format_color_text</span>
+              <Input id="font-color" type="color" v-model="selectedElement.style.color" />
             </div>
           </div>
 
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Stil</label>
-            <div class="flex space-x-2">
-              <button @click="toggleStyle('bold')" class="p-2 border rounded-lg hover:bg-gray-50"
-                :class="{ 'bg-blue-50 border-blue-500': selectedElement.style.fontWeight === 'bold' }">
-                <span class="material-icons-outlined text-sm">format_bold</span>
-              </button>
-              <button @click="toggleStyle('italic')" class="p-2 border rounded-lg hover:bg-gray-50"
-                :class="{ 'bg-blue-50 border-blue-500': selectedElement.style.fontStyle === 'italic' }">
-                <span class="material-icons-outlined text-sm">format_italic</span>
-              </button>
-              <button @click="toggleStyle('underline')" class="p-2 border rounded-lg hover:bg-gray-50"
-                :class="{ 'bg-blue-50 border-blue-500': selectedElement.style.textDecoration === 'underline' }">
-                <span class="material-icons-outlined text-sm">format_underlined</span>
-              </button>
-            </div>
-          </div>
-        </template>
-
-        <!-- Görsel Ayarları -->
-        <template v-if="selectedElement && selectedElement.type === 'image'">
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Görsel Yükle</label>
-            <input type="file" @change="handleImageUpload" accept="image/*" class="w-full">
-          </div>
-
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Boyut</label>
-            <div class="grid grid-cols-2 gap-2">
-              <input v-model.number="selectedElement.style.width" type="number" placeholder="Genişlik"
-                class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-              <input v-model.number="selectedElement.style.height" type="number" placeholder="Yükseklik"
-                class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <!-- Metin ve Başlık İçin Ayarlar -->
+          <div v-if="['text', 'heading', 'link'].includes(selectedElement.type)">
+            <h4 class="font-medium leading-none">İçerik Ayarları</h4>
+            <div class="space-y-2">
+              <Label for="content">İçerik</Label>
+              <Input id="content" type="text" v-model="selectedElement.content" placeholder="İçerik girin..." />
             </div>
           </div>
 
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Hizalama</label>
-            <div class="flex space-x-2">
-              <button v-for="align in ['left', 'center', 'right']" :key="align"
-                @click="selectedElement.style.textAlign = align" class="flex-1 p-2 border rounded-lg hover:bg-gray-50"
-                :class="{ 'bg-blue-50 border-blue-500': selectedElement.style.textAlign === align }">
-                <span class="material-icons-outlined text-sm">format_align_{{ align }}</span>
-              </button>
-            </div>
-          </div>
-        </template>
-
-        <!-- Video Ayarları -->
-        <template v-if="selectedElement && selectedElement.type === 'video'">
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Video Yükle veya Bağlantı Ekle</label>
-            <input type="text" v-model="selectedElement.content" placeholder="Video URL'si veya dosya yolu"
-              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-          </div>
-
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Boyut</label>
-            <div class="grid grid-cols-2 gap-2">
-              <input v-model.number="selectedElement.style.width" type="number" placeholder="Genişlik"
-                class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-              <input v-model.number="selectedElement.style.height" type="number" placeholder="Yükseklik"
-                class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            </div>
-          </div>
-        </template>
-
-        <!-- Bağlantı Ayarları -->
-        <template v-if="selectedElement && selectedElement.type === 'link'">
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Bağlantı Metni</label>
-            <input type="text" v-model="selectedElement.text" placeholder="Bağlantı metni"
-              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-          </div>
-
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">URL</label>
-            <input type="url" v-model="selectedElement.href" placeholder="https://example.com"
-              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-          </div>
-
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Hizalama</label>
-            <div class="flex space-x-2">
-              <button v-for="align in ['left', 'center', 'right', 'justify']" :key="align"
-                @click="selectedElement.style.textAlign = align" class="flex-1 p-2 border rounded-lg hover:bg-gray-50"
-                :class="{ 'bg-blue-50 border-blue-500': selectedElement.style.textAlign === align }">
-                <span class="material-icons-outlined text-sm">format_align_{{ align }}</span>
-              </button>
-            </div>
-          </div>
-        </template>
-
-        <!-- Tablo Ayarları -->
-        <template v-if="selectedElement && selectedElement.type === 'table'">
-          <div class="space-y-4">
-            <div class="overflow-x-auto">
-              <table class="w-full border-collapse">
-                <tbody>
-                  <tr v-for="(row, rowIndex) in selectedElement.content" :key="rowIndex">
-                    <td v-for="(cell, colIndex) in row" :key="colIndex" class="border p-2 min-w-[100px]">
-                      <input type="text" v-model="selectedElement.content[rowIndex][colIndex]"
-                        class="w-full px-2 py-1 border-0 focus:ring-2 focus:ring-blue-500" @input="addToHistory">
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="text-sm text-gray-600 block mb-2">Hücre Dolgusu</label>
-                <input type="number" v-model.number="selectedElement.style.cellPadding"
-                  class="w-full px-3 py-2 border rounded-lg" min="0" max="20">
-              </div>
-              <div>
-                <label class="text-sm text-gray-600 block mb-2">Kenarlık Kalınlığı</label>
-                <input type="number" v-model.number="selectedElement.style.borderWidth"
-                  class="w-full px-3 py-2 border rounded-lg" min="0" max="5">
-              </div>
-            </div>
-
-            <div>
-              <label class="text-sm text-gray-600 block mb-2">Kenarlık Rengi</label>
-              <input type="color" v-model="selectedElement.style.borderColor" class="w-full h-10 rounded-lg">
-            </div>
-          </div>
-        </template>
-
-        <!-- Liste Ayarları -->
-        <template v-if="selectedElement && selectedElement.type === 'list'">
-          <div class="space-y-4">
-            <div>
-              <label class="text-sm text-gray-600 block mb-2">Liste Tipi</label>
-              <select v-model="selectedElement.style.listStyleType"
-                class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                <option value="disc">Nokta</option>
-                <option value="circle">Halka</option>
-                <option value="square">Kare</option>
-                <option value="decimal">Sayı</option>
-                <option value="lower-alpha">Harf (a, b, c)</option>
-                <option value="upper-alpha">Harf (A, B, C)</option>
-              </select>
-            </div>
-          </div>
-        </template>
-
-        <!-- Şekil Ayarları -->
-        <template v-if="selectedElement && selectedElement.type === 'shape'">
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Şekil Tipi</label>
-            <select v-model="selectedElement.shapeType"
-              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-              <option value="rectangle">Dikdörtgen</option>
-              <option value="circle">Daire</option>
-              <option value="line">Çizgi</option>
-            </select>
-          </div>
-
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Boyut</label>
-            <div class="grid grid-cols-2 gap-2">
-              <input v-model.number="selectedElement.style.width" type="number" placeholder="Genişlik"
-                class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-              <input v-model.number="selectedElement.style.height" type="number" placeholder="Yükseklik"
-                class="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+          <!-- Başlık İçin Ek Ayarlar -->
+          <div v-if="selectedElement.type === 'heading'">
+            <h4 class="font-medium leading-none">Başlık Ayarları</h4>
+            <div class="space-y-2">
+              <Label for="heading-level">Başlık Seviyesi</Label>
+              <Select v-model="selectedElement.headingLevel" id="heading-level">
+                <SelectTrigger>
+                  <SelectValue placeholder="Başlık Seviyesi Seçin" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Seviyeler</SelectLabel>
+                    <SelectItem value="h1">H1</SelectItem>
+                    <SelectItem value="h2">H2</SelectItem>
+                    <SelectItem value="h3">H3</SelectItem>
+                    <SelectItem value="h4">H4</SelectItem>
+                    <SelectItem value="h5">H5</SelectItem>
+                    <SelectItem value="h6">H6</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Dolgu Rengi</label>
-            <input type="color" v-model="selectedElement.style.backgroundColor" class="w-full h-10 rounded-lg">
+          <!-- Bağlantılar İçin Ayarlar -->
+          <div v-if="selectedElement.type === 'link'">
+            <h4 class="font-medium leading-none">Bağlantı Ayarları</h4>
+            <div class="space-y-2">
+              <Label for="link-text">Bağlantı Metni</Label>
+              <Input id="link-text" type="text" v-model="selectedElement.text" placeholder="Bağlantı metni" />
+            </div>
+            <div class="space-y-2">
+              <Label for="link-url">URL</Label>
+              <Input id="link-url" type="url" v-model="selectedElement.href" placeholder="https://example.com" />
+            </div>
           </div>
 
-          <div class="space-y-2">
-            <label class="text-sm text-gray-600 block">Kenarlık Rengi</label>
-            <input type="color" v-model="selectedElement.style.borderColor" class="w-full h-10 rounded-lg">
+          <!-- Görseller İçin Ayarlar -->
+          <div v-if="selectedElement.type === 'image'">
+            <h4 class="font-medium leading-none">Görsel Ayarları</h4>
+            <div class="space-y-2">
+              <Label for="image-upload">Görsel Yükle</Label>
+              <Input id="image-upload" type="file" accept="image/*" @change="handleImageUpload" />
+            </div>
+            <div class="space-y-2">
+              <Label for="image-width">Genişlik (px)</Label>
+              <Input id="image-width" type="number" v-model.number="selectedElement.style.width" placeholder="Genişlik"
+                min="10" />
+            </div>
+            <div class="space-y-2">
+              <Label for="image-height">Yükseklik (px)</Label>
+              <Input id="image-height" type="number" v-model.number="selectedElement.style.height"
+                placeholder="Yükseklik" min="10" />
+            </div>
           </div>
-        </template>
-      </div>
-    </div>
 
-    <!-- Ayar Paneli Toggle Butonu (Mobil) -->
-    <button @click="toggleSettings"
-      class="md:hidden p-2 m-2 rounded-md text-gray-700 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
-      <span class="material-icons">settings</span>
-    </button>
+          <!-- Şekiller İçin Ayarlar -->
+          <div v-if="selectedElement.type === 'shape'">
+            <h4 class="font-medium leading-none">Şekil Ayarları</h4>
+            <div class="space-y-2">
+              <Label for="shape-type">Şekil Tipi</Label>
+              <Select v-model="selectedElement.shapeType" id="shape-type">
+                <SelectTrigger>
+                  <SelectValue placeholder="Şekil Tipi Seçin" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Tipler</SelectLabel>
+                    <SelectItem value="rectangle">Dikdörtgen</SelectItem>
+                    <SelectItem value="circle">Daire</SelectItem>
+                    <SelectItem value="line">Çizgi</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <div class="space-y-2">
+              <Label for="shape-width">Genişlik (px)</Label>
+              <Input id="shape-width" type="number" v-model.number="selectedElement.style.width" placeholder="Genişlik"
+                min="10" />
+            </div>
+            <div class="space-y-2">
+              <Label for="shape-height">Yükseklik (px)</Label>
+              <Input id="shape-height" type="number" v-model.number="selectedElement.style.height"
+                placeholder="Yükseklik" min="10" />
+            </div>
+            <div class="space-y-2">
+              <Label for="shape-bg-color">Dolgu Rengi</Label>
+              <Input id="shape-bg-color" type="color" v-model="selectedElement.style.backgroundColor" />
+            </div>
+            <div class="space-y-2">
+              <Label for="shape-border-color">Kenarlık Rengi</Label>
+              <Input id="shape-border-color" type="color" v-model="selectedElement.style.borderColor" />
+            </div>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
   </div>
 </template>
 
@@ -531,22 +404,44 @@
 import { ref, reactive, watchEffect, computed } from 'vue'
 import draggable from 'vuedraggable'
 import pdfMake from 'pdfmake/build/pdfmake'
-import { useToast } from 'vue-toast-notification'
+import 'pdfmake/build/vfs_fonts.js'
+import {
+  Button
+} from '@/components/ui/button'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger
+} from '@/components/ui/popover'
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger
+} from '@/components/ui/context-menu'
+import { useToast } from '@/components/ui/toast/use-toast'
 
 // Bildirim Sistemi
-const toast = useToast()
+const { toast } = useToast()
 
 // Elementler ve Seçili Element
 const elements = ref([])
 const selectedElement = ref(null)
 const isPreviewMode = ref(false)
 
-// Menü ve Ayar Paneli Durumu
+// Menü Durumu
 const isMenuOpen = ref(false)
-const isSettingsOpen = ref(false)
-
-// Hata Mesajı
-const errorMessage = ref('')
 
 // Sayfa Ayarları
 const pageSettings = reactive({
@@ -585,28 +480,19 @@ const PAGE_SIZES = {
   legal: { width: 612, height: 1008 }
 }
 
-// Hazır Şablonlar
-const templates = ref([
-  { id: 1, name: 'Boş Belge' },
-  { id: 2, name: 'Rapor Şablonu' },
-  { id: 3, name: 'Mektup Şablonu' }
-])
-
 // Sayfa Boyutu ve Yönünü İzleme
-watchEffect(() => {
+const pageContainerStyle = computed(() => {
   const size = PAGE_SIZES[pageSettings.size]
   if (size) {
-    const container = document.querySelector('.page-container')
-    if (container) {
-      if (pageSettings.orientation === 'portrait') {
-        container.style.width = `${size.width}px`
-        container.style.minHeight = `${size.height}px`
-      } else {
-        container.style.width = `${size.height}px`
-        container.style.minHeight = `${size.width}px`
-      }
+    const width = pageSettings.orientation === 'portrait' ? size.width : size.height
+    const height = pageSettings.orientation === 'portrait' ? size.height : size.width
+    return {
+      minHeight: `${height}px`,
+      width: `${width}px`,
+      padding: `${pageSettings.margins.top}px ${pageSettings.margins.right}px ${pageSettings.margins.bottom}px ${pageSettings.margins.left}px`
     }
   }
+  return {}
 })
 
 // Element Ekleme
@@ -668,7 +554,8 @@ const addElement = (type) => {
         content: '',
         style: {
           width: 480,
-          height: 270
+          height: 270,
+          textAlign: 'center'
         }
       }
       break
@@ -685,13 +572,19 @@ const addElement = (type) => {
           width: '100%',
           backgroundColor: '#ffffff',
           borderColor: '#000000',
+          borderWidth: 1,
+          borderStyle: 'solid'
         }
       }
   }
 
   elements.value.push(newElement)
   addToHistory()
-  toast.success(`${capitalize(type)} elementi eklendi!`)
+  toast({
+    title: `${capitalize(type)} elementi eklendi!`,
+    description: '',
+    variant: 'success'
+  })
 }
 
 // Element Güncelleme
@@ -712,7 +605,11 @@ const removeElement = (element) => {
       selectedElement.value = null
     }
     addToHistory()
-    toast.info(`${capitalize(element.type)} elementi silindi!`)
+    toast({
+      title: `${capitalize(element.type)} elementi silindi!`,
+      description: '',
+      variant: 'info'
+    })
   }
 }
 
@@ -724,18 +621,16 @@ const duplicateElement = (element) => {
   }))
   elements.value.splice(elements.value.findIndex(el => el.id === element.id) + 1, 0, newElement)
   addToHistory()
-  toast.success(`${capitalize(element.type)} elementi kopyalandı!`)
+  toast({
+    title: `${capitalize(element.type)} elementi kopyalandı!`,
+    description: '',
+    variant: 'success'
+  })
 }
 
-// Element Seçme
-const selectElement = (element) => {
-  if (!isPreviewMode.value) {
-    selectedElement.value = element
-    // Otomatik olarak sağ ayar panelini aç
-    if (window.innerWidth < 768) {
-      isSettingsOpen.value = true
-    }
-  }
+// Element Seçme ve Popover Açma
+const openEditPopover = (element) => {
+  selectedElement.value = element
 }
 
 // Görsel Yükleme
@@ -762,7 +657,11 @@ const handleImageUpload = (event) => {
             height: `${height}px`
           }
         })
-        toast.success('Görsel yüklendi!')
+        toast({
+          title: 'Görsel yüklendi!',
+          description: '',
+          variant: 'success'
+        })
       }
       img.src = e.target.result
     }
@@ -770,25 +669,7 @@ const handleImageUpload = (event) => {
   }
 }
 
-// Video Yükleme veya Bağlantı Ekleme
-const handleVideoUpload = (event) => {
-  if (!selectedElement.value || selectedElement.value.type !== 'video') return
-
-  const url = event.target.value
-  if (url) {
-    updateElement(selectedElement.value, {
-      content: url,
-      style: {
-        ...selectedElement.value.style,
-        width: 480,
-        height: 270
-      }
-    })
-    toast.success('Video eklendi!')
-  }
-}
-
-// Stil Toggle Etme
+// Stil Toggle Etme (Bu fonksiyon artık kullanılmıyor, kaldırılabilir)
 const toggleStyle = (style) => {
   if (!selectedElement.value) return
 
@@ -812,13 +693,13 @@ const toggleStyle = (style) => {
 // Liste Öğesi Ekleme
 const addListItem = (index) => {
   if (selectedElement.value && selectedElement.value.type === 'list') {
-    elements.value.forEach((el, idx) => {
-      if (el.id === selectedElement.value.id) {
-        el.content.splice(index + 1, 0, '')
-      }
-    })
+    selectedElement.value.content.splice(index + 1, 0, '')
     addToHistory()
-    toast.success('Yeni liste öğesi eklendi!')
+    toast({
+      title: 'Yeni liste öğesi eklendi!',
+      description: '',
+      variant: 'success'
+    })
   }
 }
 
@@ -828,8 +709,27 @@ const removeListItem = (index) => {
     if (selectedElement.value.content.length > 1) {
       selectedElement.value.content.splice(index, 1)
       addToHistory()
-      toast.info('Liste öğesi silindi!')
+      toast({
+        title: 'Liste öğesi silindi!',
+        description: '',
+        variant: 'info'
+      })
+    } else {
+      removeElement(selectedElement.value)
+      toast({
+        title: 'Son liste öğesi silindi!',
+        description: '',
+        variant: 'info'
+      })
     }
+  }
+}
+
+// Liste Backspace İşlevi
+const handleBackspace = (index, event) => {
+  const input = event.target
+  if (input.value.length <= 1) {
+    removeListItem(index)
   }
 }
 
@@ -850,7 +750,7 @@ const addToHistory = () => {
   history.value.push(JSON.stringify(elements.value))
 }
 
-// Hedef: İndirme butonu, PDF'de hiçbir içerik yoksa devre dışı kalmalı
+// İndirme Butonu Kontrolü
 const canDownload = computed(() => elements.value.length > 0)
 
 // Geri Al ve İleri Al
@@ -858,7 +758,11 @@ const undoAction = () => {
   if (historyIndex.value > 0) {
     historyIndex.value--
     elements.value = JSON.parse(history.value[historyIndex.value])
-    toast.info('Geri alındı!')
+    toast({
+      title: 'Geri alındı!',
+      description: '',
+      variant: 'info'
+    })
   }
 }
 
@@ -866,12 +770,25 @@ const redoAction = () => {
   if (historyIndex.value < history.value.length - 1) {
     historyIndex.value++
     elements.value = JSON.parse(history.value[historyIndex.value])
-    toast.info('İleri alındı!')
+    toast({
+      title: 'İleri alındı!',
+      description: '',
+      variant: 'info'
+    })
   }
 }
 
 // PDF Oluşturma
 const generatePDF = () => {
+  if (elements.value.length === 0) {
+    toast({
+      title: 'PDF oluşturmak için en az bir element ekleyin!',
+      description: '',
+      variant: 'destructive'
+    })
+    return
+  }
+
   const docDefinition = {
     pageSize: pageSettings.size.toUpperCase(),
     pageOrientation: pageSettings.orientation,
@@ -1020,58 +937,19 @@ const generatePDF = () => {
 
     const pdfDocGenerator = pdfMake.createPdf(docDefinition)
     pdfDocGenerator.download('document.pdf')
-    toast.success('PDF başarıyla oluşturuldu!')
+    toast({
+      title: 'PDF başarıyla oluşturuldu!',
+      description: '',
+      variant: 'success'
+    })
   } catch (error) {
     console.error('PDF oluşturma hatası:', error)
-    toast.error('PDF oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.')
+    toast({
+      title: 'PDF oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.',
+      description: '',
+      variant: 'destructive'
+    })
   }
-}
-
-// Şablon Yükleme (Örnek olarak Boş Belge)
-const loadTemplate = (template) => {
-  if (template.name === 'Boş Belge') {
-    elements.value = []
-    selectedElement.value = null
-    addToHistory()
-    toast.info('Boş belge şablonu yüklendi!')
-  }
-  // Diğer şablonlar için ekleme yapılabilir
-}
-
-// Elementleri Temizleme
-const clearElements = () => {
-  if (confirm('Tüm içeriği silmek istediğinize emin misiniz?')) {
-    elements.value = []
-    selectedElement.value = null
-    addToHistory()
-    toast.info('Tüm içerikler temizlendi!')
-  }
-}
-
-// Önizleme Modunu Toggle Etme
-const togglePreview = () => {
-  isPreviewMode.value = !isPreviewMode.value
-  if (isPreviewMode.value) {
-    selectedElement.value = null
-    toast.info('Önizleme moduna geçildi!')
-  } else {
-    toast.info('Düzenleme moduna geçildi!')
-  }
-}
-
-// Menü ve Ayar Paneli Toggle Fonksiyonları
-const toggleMenu = () => {
-  isMenuOpen.value = !isMenuOpen.value
-}
-
-const toggleSettings = () => {
-  isSettingsOpen.value = !isSettingsOpen.value
-}
-
-// Yardımcı Fonksiyon: İlk Harfi Büyük Yapma
-const capitalize = (s) => {
-  if (typeof s !== 'string') return ''
-  return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
 // Liste Sınıfı Hesaplama
@@ -1084,20 +962,76 @@ const listClass = computed(() => {
       return 'list-lower-alpha list-inside'
     case 'upper-alpha':
       return 'list-upper-alpha list-inside'
+    case 'circle':
+      return 'list-circle list-inside'
+    case 'square':
+      return 'list-square list-inside'
     case 'disc':
     default:
       return 'list-disc list-inside'
   }
 })
+
+// Elementleri Temizleme
+const clearElements = () => {
+  if (confirm('Tüm içeriği silmek istediğinize emin misiniz?')) {
+    elements.value = []
+    selectedElement.value = null
+    addToHistory()
+    toast({
+      title: 'Tüm içerikler temizlendi!',
+      description: '',
+      variant: 'info'
+    })
+  }
+}
+
+// Önizleme Modunu Toggle Etme
+const togglePreview = () => {
+  isPreviewMode.value = !isPreviewMode.value
+  if (isPreviewMode.value) {
+    selectedElement.value = null
+    toast({
+      title: 'Önizleme moduna geçildi!',
+      description: '',
+      variant: 'info'
+    })
+  } else {
+    toast({
+      title: 'Düzenleme moduna geçildi!',
+      description: '',
+      variant: 'info'
+    })
+  }
+}
+
+// Menü Toggle Fonksiyonu
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value
+}
+
+// Yardımcı Fonksiyon: İlk Harfi Büyük Yapma
+const capitalize = (s) => {
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
 </script>
 
 <style scoped>
+/* Responsive Düzenlemeler */
 @media (max-width: 768px) {
   .page-container {
     max-width: 100% !important;
     width: 100% !important;
   }
 
+  /* Ayar Paneli Mobilde Alttan Açılacak */
+  .fixed.inset-0.z-40 {
+    background: none;
+    /* Overlay kaldırıldı */
+  }
+
+  /* Ayar Paneli Alttan Açılacak */
   @media (max-width: 768px) {
     .fixed.inset-0.z-40 {
       top: auto;
@@ -1107,6 +1041,7 @@ const listClass = computed(() => {
   }
 }
 
+/* Transition for Side Panels */
 .transition-transform {
   transition-property: transform;
 }
@@ -1115,19 +1050,24 @@ const listClass = computed(() => {
   transition-duration: 300ms;
 }
 
+/* Hide scrollbars */
 .page-container::-webkit-scrollbar {
   display: none;
 }
 
 .page-container {
   -ms-overflow-style: none;
+  /* IE and Edge */
   scrollbar-width: none;
+  /* Firefox */
 }
 
+/* Button Styles */
 button {
   cursor: pointer;
 }
 
+/* Animation for Error Message */
 .fixed {
   animation: fadeIn 0.5s ease-in-out;
 }
@@ -1142,3 +1082,16 @@ button {
   }
 }
 </style>
+
+
+// Yapılacaklar : 
+
+// 1- Şuan düzenle dediğimiz zaman bir şey olmuyor. 
+// 2- PDF e video ekleniyor mu ki? buraya yazmışız ama ekleniyor mu emin değilim.
+// 3- Sayfayı böyle yazdıkça uzayıp gidiyor. Ama PDF de biliyorsun her şey sayfa sayfa. Yani bir sayfa bittiğinde ya diğer sayfaya geçsin. ya da sol alttan manuel olarak yeni bir sayfa ekleyebilsin. 
+// 4- Şuan sadece bir sayfa var. Ama sayfa sayısını arttırabilmeli.
+// 5- Elementlerde ki şekil kısmını tamamen kaldıralım lütfen. Bunu istemiyorum.
+// 6- Şuan yeni bir görsel falan ekleyemiyorum. Metin düzenleyemiyorum.
+// 7- Bildirim Özelleştirmeleri: useToast fonksiyonu ile bildirimlerin süresini ve konumunu daha da özelleştirebilirsiniz. Örneğin, kritik hatalar için kalıcı bildirimler veya belirli sürelerde otomatik kapanan bildirimler ekleyebilirsiniz.
+// 8- Görsel Geri Bildirim: Elementler üzerinde sağ tıklama yapıldığında görsel olarak hangi işlemlerin yapılabileceğini belirtmek için ikonlar veya diğer görsel öğeler ekleyebilirsiniz.
+// 9- PDF e eklenebilecek daha fazla element türü ekleyebilmek istiyorum. burayı daha da modüler hale getirmek istiyorum. Her element farklı bı component haline de getirilebilir.
