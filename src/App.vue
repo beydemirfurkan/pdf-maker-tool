@@ -106,12 +106,6 @@
             <span class="material-icons-outlined">delete_sweep</span>
             Temizle
           </button>
-
-          <button @click="saveTemplate"
-            class="px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2">
-            <span class="material-icons-outlined">save</span>
-            Şablon Kaydet
-          </button>
         </div>
 
         <div class="flex items-center space-x-4">
@@ -359,6 +353,40 @@
           </div>
         </template>
 
+        <!-- Liste Ayarları -->
+        <template v-if="selectedElement.type === 'list'">
+          <div class="space-y-4">
+            <div v-for="(item, index) in selectedElement.content" :key="index" class="flex items-center gap-2">
+              <input type="text" v-model="selectedElement.content[index]"
+                class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Liste öğesi...">
+              <button @click="selectedElement.content.splice(index, 1)"
+                class="p-2 text-red-500 hover:bg-red-50 rounded-lg">
+                <span class="material-icons-outlined">delete</span>
+              </button>
+            </div>
+
+            <button @click="selectedElement.content.push('')"
+              class="w-full px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors flex items-center justify-center gap-2">
+              <span class="material-icons-outlined">add</span>
+              Yeni Öğe Ekle
+            </button>
+
+            <div class="space-y-2">
+              <label class="text-sm text-gray-600 block">Liste Tipi</label>
+              <select v-model="selectedElement.style.listStyleType"
+                class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <option value="disc">Nokta</option>
+                <option value="circle">Halka</option>
+                <option value="square">Kare</option>
+                <option value="decimal">Sayı</option>
+                <option value="lower-alpha">Harf (a, b, c)</option>
+                <option value="upper-alpha">Harf (A, B, C)</option>
+              </select>
+            </div>
+          </div>
+        </template>
+
         <!-- Şekil Ayarları -->
         <template v-if="selectedElement.type === 'shape'">
           <div class="space-y-2">
@@ -397,7 +425,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, watchEffect } from 'vue'
+import { ref, reactive, watchEffect, computed } from 'vue'
 import draggable from 'vuedraggable'
 import pdfMake from 'pdfmake/build/pdfmake'
 
@@ -462,7 +490,7 @@ watchEffect(() => {
 })
 
 const initTableElement = () => {
-  return {
+  const tableElement = {
     id: `element-${Date.now()}`,
     type: 'table',
     rows: 3,
@@ -478,6 +506,8 @@ const initTableElement = () => {
       cellPadding: 8
     }
   }
+  elements.value.push(tableElement)
+  return tableElement
 }
 
 const updateTableContent = (rowIndex, colIndex, value) => {
@@ -490,30 +520,42 @@ const updateTableContent = (rowIndex, colIndex, value) => {
 }
 
 const addElement = (type) => {
-  const newElement = {
-    id: `element-${Date.now()}`,
-    type,
-    content: '',
-    style: {
-      fontFamily: 'Roboto',
-      fontSize: 16,
-      color: '#000000',
-      textAlign: 'left',
-      width: '100%',
-      backgroundColor: '#ffffff',
-      borderColor: '#000000',
-    }
-  }
+  let newElement
 
-  if (type === 'image') {
-    newElement.style = {
-      ...newElement.style,
-      width: '100%',
-      textAlign: 'center'
+  if (type === 'table') {
+    newElement = initTableElement()
+  } else if (type === 'list') {
+    newElement = {
+      id: `element-${Date.now()}`,
+      type: 'list',
+      content: ['Yeni liste öğesi'],
+      style: {
+        fontFamily: 'Roboto',
+        fontSize: 16,
+        color: '#000000',
+        textAlign: 'left'
+      }
+    }
+  } else {
+    // Diğer element tipleri için mevcut kod
+    newElement = {
+      id: `element-${Date.now()}`,
+      type,
+      content: '',
+      style: {
+        fontFamily: 'Roboto',
+        fontSize: 16,
+        color: '#000000',
+        textAlign: 'left',
+        width: '100%',
+        backgroundColor: '#ffffff',
+        borderColor: '#000000',
+      }
     }
   }
 
   elements.value.push(newElement)
+  addToHistory()
 }
 
 const updateElement = (element, updates) => {
@@ -728,14 +770,24 @@ const generatePDF = () => {
 
       case 'list':
         if (element.content && element.content.length > 0) {
-          docDefinition.content.push({
-            ul: element.content.filter(item => item.trim()).map(item => ({
-              text: item,
-              fontSize: element.style.fontSize,
-              color: element.style.color
-            })),
+          const listType = element.style.listStyleType || 'disc'
+          const list = {
+            [listType === 'decimal' || listType === 'lower-alpha' || listType === 'upper-alpha' ? 'ol' : 'ul']:
+              element.content.filter(item => item.trim()).map(item => ({
+                text: item,
+                fontSize: element.style.fontSize,
+                color: element.style.color,
+              })),
             margin: [0, 5, 0, 5]
-          })
+          }
+
+          if (listType === 'lower-alpha') {
+            list.type = 'lower-alpha'
+          } else if (listType === 'upper-alpha') {
+            list.type = 'upper-alpha'
+          }
+
+          docDefinition.content.push(list)
         }
         break
 
@@ -767,9 +819,6 @@ const generatePDF = () => {
 const loadTemplate = (template) => {
 }
 
-const saveTemplate = () => {
-}
-
 const clearElements = () => {
   if (confirm('Tüm içeriği silmek istediğinize emin misiniz?')) {
     elements.value = []
@@ -784,4 +833,20 @@ const togglePreview = () => {
     selectedElement.value = null
   }
 }
+
+const updatePageSize = computed(() => {
+  const size = PAGE_SIZES[pageSettings.size]
+  if (pageSettings.orientation === 'portrait') {
+    return {
+      width: `${size.width}px`,
+      height: `${size.height}px`
+    }
+  } else {
+    return {
+      width: `${size.height}px`,
+      height: `${size.width}px`
+    }
+  }
+})
+
 </script>
